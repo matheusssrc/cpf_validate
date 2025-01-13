@@ -1,17 +1,20 @@
-cpf_send = '69564912046'
-nine_digits= cpf_send[:9]
-counter_1 = 10
+cpf = '69564912046'
 
-result_digit_1 = 0
+def calculate_first_digit(cpf: str, start_multiplier: int):
+    first_nine_digits= cpf[:9]
+    formula_1_result = sum(
+        int(digit) * multiplier 
+        for digit, multiplier 
+        in zip(first_nine_digits, range(start_multiplier, 1, -1))
+    )
+    formula_2_result = (formula_1_result * 10) % 11
+    return str(formula_2_result) if formula_2_result <= 9 else "0"
 
-for digit in nine_digits:
-    result_digit_1 += int(digit) * counter_1
-    counter_1 -= 1
+first_digit = calculate_first_digit(cpf, 10)
 
-digit_1 = (result_digit_1 * 10) % 11
-digit_1 = digit_1 if digit_1 <= 9 else 0
+nine_digits = cpf[:9]
 
-ten_digits = nine_digits + str(digit_1)
+ten_digits = nine_digits + first_digit
 counter_2 = 11
 
 result_digit_2 = 0
@@ -22,9 +25,9 @@ digit_2 = (result_digit_2 *10) % 11
 digit_2 = digit_2 if digit_2 <= 9 else 0
 
 
-cpf_generated = f'{nine_digits}{digit_1}{digit_2}'
+cpf_generated = f'{nine_digits}{first_digit}{digit_2}'
 
-if cpf_send == cpf_generated:
-    print(f'{cpf_send} é válido!')
+if cpf == cpf_generated:
+    print(f'{cpf} é válido!')
 else:
     print('CPF inválido!')
